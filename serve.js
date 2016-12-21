@@ -78,3 +78,14 @@ function setupRoom(name,thermometer_id,heater_address){
 
 setupRoom('living_room','57A7993C','lazybone://10.0.0.19')
 setupRoom('bedroom','2600032D')
+
+var express = require('express')
+var app = express()
+
+
+app.use('/static', express.static('static'))
+
+app.listen(3000, function () {
+  console.log('Example app listening on port 3000!')
+})
+
