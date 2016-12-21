@@ -1,0 +1,41 @@
+<html ng-app='homeApp'>
+<head>
+<title>Home</title>
+	<!-- AngularJS -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
+
+<!-- AngularFire -->
+<script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
+<script type="text/javascript">
+	var config = {
+	    apiKey: "AIzaSyC0Vqb-oTpl1oe6dW2ZzZ07xBlc8NIC3YQ",
+	    authDomain: "iotdata.firebaseapp.com",
+	    databaseURL: "https://iotdata.firebaseio.com",
+	    storageBucket: "firebase-iotdata.appspot.com",
+	    messagingSenderId: "462881763016"
+	};
+  firebase.initializeApp(config);
+
+  var app = angular.module("homeApp", ["firebase"]);
+  app.controller("StatusCtrl", function($scope, $firebaseObject,$firebaseArray) {
+	  var living_room_ref = firebase.database().ref("temperature_log/living_room").orderByKey().limitToLast(1)
+	  // download the data into a local object
+	  $scope.living_room = $firebaseArray(living_room_ref);
+
+	  var bedroom_ref = firebase.database().ref("temperature_log/bedroom").orderByKey().limitToLast(1)
+	  // download the data into a local object
+	  $scope.bedroom = $firebaseArray(bedroom_ref);
+
+	  // putting a console.log here won't work, see below
+	});
+
+
+</script>
+</head>
+<body ng-controller="StatusCtrl">
+	{{living_room[0]}} {{bedroom[0]}}
+</body>
+</html>
