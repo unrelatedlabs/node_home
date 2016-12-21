@@ -56,7 +56,7 @@ function setupRoom(name,thermometer_id,heater_address){
 			firebase.database().ref('devices/' + name ).set(status);
   			firebase.database().ref('temperature_log/' + name ).push(status)
 			console.log('Temperature updated to firebase ')
-			thermostatInstance.updateStatus(status)
+			//thermostatInstance.updateStatus(status)
 		}
 	})
 

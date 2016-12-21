@@ -29,6 +29,12 @@
 	  // download the data into a local object
 	  $scope.bedroom = $firebaseArray(bedroom_ref);
 
+	  var living_room_settings_ref = firebase.database().ref("settings/living_room")
+	  // download the data into a local object
+
+	  var living_room_settings = $firebaseObject(living_room_settings_ref);
+
+	  living_room_settings.$bindTo($scope, "living_room_settings");
 	  // putting a console.log here won't work, see below
 	});
 
@@ -37,5 +43,9 @@
 </head>
 <body ng-controller="StatusCtrl">
 	{{living_room[0]}} {{bedroom[0]}}
+	<div>
+	Living room: <input type="number" ng-model="living_room_settings.temperature">
+	</div>
+	{{living_room_settings}}
 </body>
 </html>
