@@ -20,7 +20,7 @@
   firebase.initializeApp(config);
 
   var app = angular.module("homeApp", ["firebase"]);
-  app.controller("StatusCtrl", function($scope, $firebaseObject,$firebaseArray) {
+  app.controller("StatusCtrl", function($scope, $rootScope,$firebaseObject,$firebaseArray,$interval) {
 	  var living_room_ref = firebase.database().ref("temperature_log/living_room").orderByKey().limitToLast(1)
 	  // download the data into a local object
 	  $scope.living_room = $firebaseArray(living_room_ref);
@@ -36,16 +36,67 @@
 
 	  living_room_settings.$bindTo($scope, "living_room_settings");
 	  // putting a console.log here won't work, see below
-	});
+	  $scope.ago = 0
+
+	  $interval(function() {
+	  	   $scope.bedroom_ago = (new Date().getTime()-$scope.bedroom[0].timestamp);
+	  	   $scope.living_room_ago = (new Date().getTime()-$scope.living_room[0].timestamp);
+
+	    }, 1000 );
+
+   });
+
+   app.filter('elapsed', function($filter,$interval){
+   	 
+    return function(difference){
+
+        if (!difference) return;
+
+        
+   
+        // Seconds (e.g. 32s)
+        difference /= 1000;
+        if (difference < 60) return Math.floor(difference)+'s';
+
+        // Minutes (e.g. 12m)
+        difference /= 60;
+        if (difference < 60) return Math.floor(difference)+'m';
+
+        // Hours (e.g. 5h)
+        difference /= 60;
+        if (difference < 24) return Math.floor(difference)+'h';
+
+        // Date (e.g. Dec 2)
+        return $filter('date')(time, 'MMM d');
+    };
+    });
+
+    
+
+   
 
 
 </script>
 </head>
 <body ng-controller="StatusCtrl">
-	{{living_room[0]}} {{bedroom[0]}}
+	
 	<div>
 	Living room: <input type="number" ng-model="living_room_settings.temperature">
 	</div>
-	{{living_room_settings}}
+	{{ago}}
+	<div moment-interval='2000'>
+		Living room: {{living_room[0].temperature }}C  {{bedroom_ago |elapsed }} ago
+	</div>
+
+	<div moment-interval='1000'>
+		 Bedroom: {{bedroom[0].temperature }}C {{living_room_ago | elapsed }} ago
+	</div>
+
+	<div>
+		{{living_room_settings}}
+	</div>
+	<div>
+	{{living_room[0]}} {{bedroom[0]}}
+	</div>
 </body>
 </html>
