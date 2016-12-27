@@ -99,13 +99,18 @@ app.get("/temperature",function(req,resp){
 app.get("/heat_it_up",function(req,resp){
 	var bedroomTemperature = firebase.database().ref("temperature_log/living_room").orderByKey().limitToLast(1)
 	bedroomTemperature.on('child_added', function(snapshot) {
-		var temp = snapshot.val().temperaure;
-		temp += 1.0 - 0.4 // + 1 deg
-	  	console.log('setting temperaure to ', temp);
-	
-		firebase.database().ref('settings/living_room/temperature' ).set(temp);	   
+		try{
+			var temp = snapshot.val().temperature;
+			temp += 1.0 - 0.4 // + 1 deg
+		  	console.log('setting temperaure to ', temp);
 		
-		resp.send("ok")
+			firebase.database().ref('settings/living_room/temperature' ).set(temp);	   
+			
+			resp.send("ok")
+		}catch(e){
+			console.error("Ups",e)
+			resp.send("Error " + e)
+		}
 
 	});
 })
