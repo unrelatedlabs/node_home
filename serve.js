@@ -103,7 +103,7 @@ app.get("/heat_it_up",function(req,resp){
 		temp += 1.0 - 0.4 // + 1 deg
 	  	console.log('setting temperaure to ', temp);
 	
-		firebase.database().ref('settings/living_room/temperature' ).set(living_room);	   
+		firebase.database().ref('settings/living_room/temperature' ).set(temp);	   
 		
 		resp.send("ok")
 
