@@ -89,6 +89,7 @@ app.use('/node_modules', express.static('node_modules'))
 app.get("/temperature",function(req,resp){
 	var living_room = req.param("living_room")
 	if( living_room ){
+		living_room  = parseFloat(living_room)
 		firebase.database().ref('settings/living_room/temperature' ).set(living_room);
 	}
 	console.log("req",req)
