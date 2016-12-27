@@ -84,6 +84,20 @@ var app = express()
 
 
 app.use('/static', express.static('static'))
+app.use('/node_modules', express.static('node_modules'))
+
+app.get("/temperature",function(req,resp){
+	var living_room = req.param("living_room")
+	if( living_room ){
+		firebase.database().ref('settings/living_room/temperature' ).set(living_room);
+	}
+	console.log("req",req)
+	resp.send("ok")
+})
+
+app.get("/",function(req,resp){
+	resp.send(":)")
+})
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!')
