@@ -96,6 +96,20 @@ app.get("/temperature",function(req,resp){
 	resp.send("ok")
 })
 
+app.get("/heat_it_up",function(req,resp){
+	var bedroomTemperature = firebase.database().ref("temperature_log/living_room").orderByKey().limitToLast(1)
+	bedroomTemperature.on('child_added', function(snapshot) {
+		var temp = snapshot.val();
+		temp += 1.0 - 0.4 // + 1 deg
+	  	console.log('setting temperaure to ', temp);
+	
+		firebase.database().ref('settings/living_room/temperature' ).set(living_room);	   
+		
+		resp.send("ok")
+
+	});
+})
+
 app.get("/",function(req,resp){
 	resp.send(":)")
 })
