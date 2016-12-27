@@ -98,7 +98,7 @@ app.get("/temperature",function(req,resp){
 
 app.get("/heat_it_up",function(req,resp){
 	var bedroomTemperature = firebase.database().ref("temperature_log/living_room").orderByKey().limitToLast(1)
-	bedroomTemperature.on('child_added', function(snapshot) {
+	bedroomTemperature.once('child_added', function(snapshot) {
 		try{
 			var temp = snapshot.val().temperature;
 			temp += 1.0 - 0.4 // + 1 deg
