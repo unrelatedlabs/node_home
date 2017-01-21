@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html ng-app='homeApp'>
+<head>
+	<title>Dash</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+
+	<!-- Firebase -->
+	<script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
+
+	<!-- AngularFire -->
+	<script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
+
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+ -->
+	<style type="text/css">
+		body{
+			font-family: HelveticaNeue-UltraLight,Arial;
+		}
+
+		.center-col{
+			max-width: 400px;
+			//background-color: gray;
+			margin: auto;
+		}
+
+		.temperature-setting{
+			font-size: 7em;
+		}
+
+		.temperature-current{
+			padding-top: 15px;
+			font-size: 1.7em;
+			font-family: HelveticaNeue-Light;
+		}
+
+		.room-label{
+			font-size: 13px;
+			font-family: HelveticaNeue-Light;
+		}
+		
+		.celsius{
+			font-family: HelveticaNeue-Light;
+		}
+
+		.temperature-setting .celsius{
+			font-family: HelveticaNeue-Light;
+			font-size: 12px;
+		}
+
+		.temperature-buttons{
+			padding-top: 6px;
+		}
+		
+		.temperature-buttons button{
+			font-size: 30px;
+			font-family: HelveticaNeue-Light;
+			margin: 10px 10px 0px 10px;
+			width: 70px;
+			background: none;
+			border:none;
+			
+			-webkit-appearance: none;
+ 			-webkit-border-radius: 0;
+		}
+
+	</style>
+
+	<script type="text/javascript" src='app.js'></script>
+</head>
+<body>
+	<div class="center-col" ng-controller="StatusCtrl">
+		<div class="container-fluid">
+        	<div class="col-xs-4 temperature-current">
+        		<div>
+        		<div class='room-label'>Living room</div>
+        		{{living_room[0].temperature }} <span class="celsius">C</span> 
+        		</div>
+        		<div>
+        		  <div class='room-label'>Bedroom</div>
+
+        			{{bedroom[0].temperature }} <span class="celsius">C</span> 
+        		</div>
+        	</div>
+        	<div class="col-xs-4 temperature-setting">
+        	{{living_room_settings.temperature2}} 
+        	</div>
+        	<div class="col-xs-4 temperature-buttons" >
+        	<button ng-click="updateTemperature(1)">+</button>
+        	<br/>
+        	<button ng-click="updateTemperature(-1)">-</button>
+        	</div>
+		</div>
+	</div>
+	<div>
+		
+<!-- <div>
+	Living room: <input type="number" ng-model="living_room_settings.temperature">
+	</div>
+	{{ago}}
+	<div moment-interval='2000'>
+		Living room: {{living_room[0].temperature }}C  {{bedroom_ago |elapsed }} ago
+	</div>
+
+	<div moment-interval='1000'>
+		 Bedroom: {{bedroom[0].temperature }}C {{living_room_ago | elapsed }} ago
+	</div>
+
+	<div>
+		{{living_room_settings}}
+	</div>
+	<div>
+	{{living_room[0]}} {{bedroom[0]}}
+	</div>
+
+	</div> -->
+</body>
+</html>

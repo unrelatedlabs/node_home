@@ -1,0 +1,169 @@
+<html ng-app='homeApp'>
+<head>
+<title>Home</title>
+	<!-- AngularJS -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
+
+<!-- AngularFire -->
+<script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
+
+<script src="/node_modules/chart.js/dist/Chart.min.js"></script>
+<script src="/node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
+
+<script type="text/javascript">
+	var config = {
+	    apiKey: "AIzaSyC0Vqb-oTpl1oe6dW2ZzZ07xBlc8NIC3YQ",
+	    authDomain: "iotdata.firebaseapp.com",
+	    databaseURL: "https://iotdata.firebaseio.com",
+	    storageBucket: "firebase-iotdata.appspot.com",
+	    messagingSenderId: "462881763016"
+	};
+  firebase.initializeApp(config);
+
+  var app = angular.module("homeApp", ["firebase","chart.js"]);
+  app.controller("StatusCtrl", function($scope, $rootScope,$firebaseObject,$firebaseArray,$interval) {
+	  var living_room_ref = firebase.database().ref("temperature_log/living_room").orderByKey().limitToLast(1)
+	  // download the data into a local object
+	  $scope.living_room = $firebaseArray(living_room_ref);
+
+	  var bedroom_ref = firebase.database().ref("temperature_log/bedroom").orderByKey().limitToLast(1)
+	  // download the data into a local object
+	  $scope.bedroom = $firebaseArray(bedroom_ref);
+
+	  var living_room_settings_ref = firebase.database().ref("settings/living_room")
+	  // download the data into a local object
+
+	  var living_room_settings = $firebaseObject(living_room_settings_ref);
+
+	  living_room_settings.$bindTo($scope, "living_room_settings");
+	  // putting a console.log here won't work, see below
+	  $scope.ago = 0
+
+	  $interval(function() {
+	  	   $scope.bedroom_ago = (new Date().getTime()-$scope.bedroom[0].timestamp);
+	  	   $scope.living_room_ago = (new Date().getTime()-$scope.living_room[0].timestamp);
+
+	    }, 1000 );
+
+	  var living_room_chart_ref = firebase.database().ref("temperature_log/living_room").orderByKey().limitToLast(10000)
+	  $scope.living_room_chart = $firebaseArray(living_room_chart_ref);
+	  $scope.living_room_chart.$watch(function(){
+	  	var data = $scope.living_room_chart
+
+	  	console.log("Change in chart",$scope.living_room_chart)
+	  	var newValues = []
+	  	var newLabels = []
+	  	for( var i in data){
+	  		var m = data[i]
+	  		newValues.push(m.temperature)
+	  		newLabels.push( new Date(m.timestamp))
+	  	}
+	  	$scope.labels = newLabels
+	  	$scope.data = [newValues]
+
+	  })
+
+
+	  $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
+	  $scope.series = ['Series A'];
+	  $scope.data = [
+	    [65, 59, 80, 81, 56, 55, 40]
+	  ];
+	  $scope.onClick = function (points, evt) {
+	    console.log(points, evt);
+	  };
+	  $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
+	  $scope.options = {
+	    scales: {
+	      yAxes: [
+	        {
+	          id: 'y-axis-1',
+	          type: 'linear',
+	          display: true,
+	          position: 'left'
+	        },
+	        {
+	          id: 'y-axis-2',
+	          type: 'linear',
+	          display: true,
+	          position: 'right'
+	        }
+	      ]
+	    }
+	  };
+
+   });
+
+   app.filter('elapsed', function($filter,$interval){
+   	 
+    return function(difference){
+
+        if (!difference) return;
+
+        
+   
+        // Seconds (e.g. 32s)
+        difference /= 1000;
+        if (difference < 60) return Math.floor(difference)+'s';
+
+        // Minutes (e.g. 12m)
+        difference /= 60;
+        if (difference < 60) return Math.floor(difference)+'m';
+
+        // Hours (e.g. 5h)
+        difference /= 60;
+        if (difference < 24) return Math.floor(difference)+'h';
+
+        // Date (e.g. Dec 2)
+        return $filter('date')(time, 'MMM d');
+    };
+    });
+
+    
+
+   
+
+
+</script>
+<style type="text/css">
+	
+	
+</style>
+</head>
+<body ng-controller="StatusCtrl">
+	<div>
+
+			<canvas id="line" class="chart chart-line" chart-data="data"
+		chart-labels="labels" chart-series="series" chart-options="options"
+		chart-dataset-override="datasetOverride" chart-click="onClick">
+		</canvas
+
+	</div>
+	
+	<div>
+	Living room: <input type="number" ng-model="living_room_settings.temperature">
+	</div>
+	{{ago}}
+	<div moment-interval='2000'>
+		Living room: {{living_room[0].temperature }}C  {{bedroom_ago |elapsed }} ago
+	</div>
+
+	<div moment-interval='1000'>
+		 Bedroom: {{bedroom[0].temperature }}C {{living_room_ago | elapsed }} ago
+	</div>
+
+	<div>
+		{{living_room_settings}}
+	</div>
+	<div>
+	{{living_room[0]}} {{bedroom[0]}}
+	</div>
+	Array
+	<div>
+	<!-- {{living_room_chart}} -->
+	</div>
+</body>
+</html>
