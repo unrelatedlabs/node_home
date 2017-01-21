@@ -84,6 +84,7 @@ var app = express()
 
 
 app.use('/static', express.static('static'))
+app.use('/dash', express.static('dash'))
 app.use('/node_modules', express.static('node_modules'))
 
 app.get("/temperature",function(req,resp){
