@@ -6,6 +6,7 @@ noble.on('stateChange', function(state){
 	console.log("State")
 	console.log(state);
 
+//	noble.startScanning([], false); 
 	noble.startScanning([], true); 
 
 });

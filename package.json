@@ -10,7 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "angular-chart.js": "^1.1.1",
-    "firebase": "^3.6.4",
     "noble": "^1.7.0"
   }
 }

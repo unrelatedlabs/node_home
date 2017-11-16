@@ -50,6 +50,7 @@ function setupRoom(name,thermometer_id,heater_address){
 	var thermostatInstance = thermostat.init(name,heater)
 
 	temp.update(function(status){
+		try{
 		if( status.device == thermometer_id ){
 			console.log('Temperature sensor ' + name,status)
 			
@@ -57,6 +58,8 @@ function setupRoom(name,thermometer_id,heater_address){
   			firebase.database().ref('temperature_log/' + name ).push(status)
 			console.log('Temperature updated to firebase ')
 			//thermostatInstance.updateStatus(status)
+		}}catch(e){
+			console.log("Temperateure update problem",e);
 		}
 	})
 
