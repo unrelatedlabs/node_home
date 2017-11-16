@@ -3,6 +3,7 @@ var wemo = new Wemo();
 
 var clients = {}
 
+function discover(){
 wemo.discover(function (err, deviceInfo) {
     var name = deviceInfo.friendlyName
 
@@ -27,7 +28,9 @@ wemo.discover(function (err, deviceInfo) {
     //client.setBinaryState(1);
     clients[""+name] = client
 });
+}
 
+setTimeout(discover,10*1000);
 
 exports.init = function(name){
     console.log("Wemo heater", name)
