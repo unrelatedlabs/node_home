@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "angular-chart.js": "^1.1.1",
-    "noble": "^1.7.0"
+    "noble": "^1.7.0",
+    "wemo-client": "^0.14.0"
   }
 }

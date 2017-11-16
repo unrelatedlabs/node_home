@@ -3,7 +3,9 @@
 <head>
 	<title>Dash</title>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,target-densitydpi=device-dpi, user-scalable=no"
+/>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 
@@ -25,13 +27,13 @@
  -->
 	<style type="text/css">
 		body{
-			font-family: HelveticaNeue-UltraLight,Arial;
+			font-family: HelveticaNeue-Medium,Arial;
 		}
 
 		.center-col{
 			max-width: 400px;
 			//background-color: gray;
-			margin: auto;
+			//margin: auto;
 		}
 
 		.temperature-setting{
@@ -64,7 +66,7 @@
 		
 		.temperature-buttons button{
 			font-size: 30px;
-			font-family: HelveticaNeue-Light;
+			font-family: HelveticaNeue-Bold;
 			margin: 10px 10px 0px 10px;
 			width: 70px;
 			background: none;
@@ -73,21 +75,33 @@
 			-webkit-appearance: none;
  			-webkit-border-radius: 0;
 		}
+		h2{
+			//text-align: center;
+		}
 
+		.on-off{
+			float:right;
+		}
 	</style>
 
 	<script type="text/javascript" src='app.js'></script>
+	<script>
+	</script>
 </head>
 <body>
 	<div class="center-col" ng-controller="StatusCtrl">
-		<div class="container-fluid">
+		<div class="container-fluid"><div class="row">
+
+			<div class="col-xs-12">
+						<h2>Living room <input type="checkbox" class="on-off"/></h2>
+			</div>
         	<div class="col-xs-4 temperature-current">
         		<div>
-        		<div class='room-label'>Living room</div>
-        		{{living_room[0].temperature }} <span class="celsius">C</span> 
-        		</div>
+					<div class='room-label'>Living room</div>
+					{{living_room[0].temperature }} <span class="celsius">C</span> 
+					</div>
         		<div>
-        		  <div class='room-label'>Bedroom</div>
+        		<div class='room-label'>Bedroom</div>
 
         			{{bedroom[0].temperature }} <span class="celsius">C</span> 
         		</div>
@@ -96,14 +110,42 @@
         	{{living_room_settings.temperature}} 
         	</div>
         	<div class="col-xs-4 temperature-buttons" >
-        	<button ng-click="updateTemperature(1)">+</button>
-        	<br/>
-        	<button ng-click="updateTemperature(-1)">-</button>
+				<button ng-click="updateTemperature(1)">+</button>
+				<br/>
+				<button ng-click="updateTemperature(-1)">-</button>
         	</div>
-		</div>
-	</div>
-	<div>
+		</div></div>
 		
+		<div class="container-fluid"><div class="row">
+			<div class="col-xs-12">
+			
+				<h2>Bedroom <input type="checkbox" class="on-off" /</h2>
+			</div>
+			<div class="col-xs-4 temperature-current">
+				<div>
+					<div class='room-label'>Living room</div>
+					{{living_room[0].temperature }}
+					<span class="celsius">C</span>
+				</div>
+				<div>
+					<div class='room-label'>Bedroom</div>
+		
+					{{bedroom[0].temperature }}
+					<span class="celsius">C</span>
+				</div>
+			</div>
+			<div class="col-xs-4 temperature-setting">
+				{{bedroom_settings.temperature}}
+			</div>
+			<div class="col-xs-4 temperature-buttons">
+				<button ng-click="updateTemperatureBedroom(1)" ng-dblclick="updateTemperatureBedroom(2)">+</button>
+				<br/>
+				<button ng-click="updateTemperatureBedroom(-1)" ng-dblclick="updateTemperatureBedroom(-2)">-</button>
+			</div>
+		</div></div>
+		
+	</div>
+ 		
 <!-- <div>
 	Living room: <input type="number" ng-model="living_room_settings.temperature">
 	</div>

@@ -2,6 +2,7 @@ var temp = require('./temperature.js')
 
 var thermostat = require('./thermostat.js')
 var lazybone = require("./lazybone.js")
+var wemo_heater = require("./wemo_heater.js")
 
 
 var names = {
@@ -47,6 +48,10 @@ function setupRoom(name,thermometer_id,heater_address){
 		heater = lazybone.init(heater_address.replace('lazybone://',''));
 	}	
 
+	if (heater_address && heater_address.indexOf("wemo:") == 0) {
+		heater = wemo_heater.init(heater_address.replace('wemo:', ''));
+	}	
+
 	var thermostatInstance = thermostat.init(name,heater)
 
 	temp.update(function(status){
@@ -80,7 +85,7 @@ function setupRoom(name,thermometer_id,heater_address){
 }
 
 setupRoom('living_room','57A7993C','lazybone://10.0.0.19')
-setupRoom('bedroom','2600032D')
+setupRoom('bedroom','2600032D',"wemo:heater")
 
 var express = require('express')
 var app = express()
@@ -96,6 +101,13 @@ app.get("/temperature",function(req,resp){
 		living_room  = parseFloat(living_room)
 		firebase.database().ref('settings/living_room/temperature' ).set(living_room);
 	}
+
+	var bedroom_temperature = req.param("bedroom")
+	if (bedroom_temperature) {
+		bedroom_temperature = parseFloat(bedroom_temperature)
+		firebase.database().ref('settings/bedroom/temperature').set(bedroom_temperature);
+	}
+
 	console.log("req",req)
 	resp.send("ok")
 })

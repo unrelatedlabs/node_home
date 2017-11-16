@@ -33,10 +33,14 @@
 
 	  var living_room_settings_ref = firebase.database().ref("settings/living_room")
 	  // download the data into a local object
-
 	  var living_room_settings = $firebaseObject(living_room_settings_ref);
-
 	  living_room_settings.$bindTo($scope, "living_room_settings");
+
+	   var bedroom_settings_ref = firebase.database().ref("settings/bedroom")
+	  // download the data into a local object
+	  var bedroom_settings = $firebaseObject(bedroom_settings_ref);
+	  bedroom_settings.$bindTo($scope, "bedroom_settings");
+
 	  // putting a console.log here won't work, see below
 	  $scope.ago = 0
 
@@ -89,6 +93,11 @@
 	<div>
 	Living room: <input type="number" ng-model="living_room_settings.temperature">
 	</div>
+	<div>
+		Bedroom:
+		<input type="number" ng-model="bedroom_settings.temperature">
+	</div>
+
 	{{ago}}
 	<div moment-interval='2000'>
 		Living room: {{living_room[0].temperature }}C  {{bedroom_ago |elapsed }} ago

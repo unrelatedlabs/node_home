@@ -23,6 +23,13 @@ var config = {
 	  var living_room_settings = $firebaseObject(living_room_settings_ref);
 
 	  living_room_settings.$bindTo($scope, "living_room_settings");
+
+	  var bedroom_settings_ref = firebase.database().ref("settings/bedroom")
+	  // download the data into a local object
+	  var bedroom_settings = $firebaseObject(bedroom_settings_ref);
+	  bedroom_settings.$bindTo($scope, "bedroom_settings");
+
+
 	  // putting a console.log here won't work, see below
 	  $scope.ago = 0
 
@@ -38,6 +45,14 @@ var config = {
 	  	$scope.living_room_settings.temperature  = ($scope.living_room_settings.temperature  || 0 ) + change
 
 	  	console.log("update",$scope.living_room_settings.temperature, change)
+	  }
+
+	  $scope.updateTemperatureBedroom = function (change) {
+		  console.log("update", $scope.bedroom_settings.temperature, change)
+
+		  $scope.bedroom_settings.temperature = ($scope.bedroom_settings.temperature || 0) + change
+
+		  console.log("update", $scope.bedroom_settings.temperature, change)
 	  }
 
    });
