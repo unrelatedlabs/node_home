@@ -11,6 +11,8 @@ noble.on('stateChange', function(state){
 
 });
 
+var temperature_last = {}
+
 noble.on('discover', function(peripheral){
 	var temperatureUUID = '1809' 
 	peripheral.advertisement.serviceData.forEach(function(service){
@@ -21,8 +23,14 @@ noble.on('discover', function(peripheral){
 				temperature:temp,
 				'timestamp':new Date().getTime()
 			}
-			console.log(status)
-			callbacks.forEach( (callback) => callback(status) )
+			
+			if( temperature_last[peripheral.advertisement.localName] != temp ){
+				console.log(status)
+				temperature_last[peripheral.advertisement.localName] == temp
+				callbacks.forEach( (callback) => callback(status) )
+			}else{
+				console.log("No change, not updating", status)
+			}
 		}
 	})
 });
