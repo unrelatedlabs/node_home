@@ -26,7 +26,7 @@ noble.on('discover', function(peripheral){
 			
 			if( temperature_last[peripheral.advertisement.localName] != temp ){
 				console.log(status)
-				temperature_last[peripheral.advertisement.localName] == temp
+				temperature_last[peripheral.advertisement.localName] = temp
 				callbacks.forEach( (callback) => callback(status) )
 			}else{
 				console.log("No change, not updating", status)
