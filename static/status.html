@@ -23,13 +23,13 @@
 
   var app = angular.module("homeApp", ["firebase"]);
   app.controller("StatusCtrl", function($scope, $rootScope,$firebaseObject,$firebaseArray,$interval) {
-	  var living_room_ref = firebase.database().ref("temperature_log/living_room").orderByKey().limitToLast(1)
+	  var living_room_ref = firebase.database().ref("devices/living_room")
 	  // download the data into a local object
-	  $scope.living_room = $firebaseArray(living_room_ref);
+	  $scope.living_room = $firebaseObject(living_room_ref);
 
-	  var bedroom_ref = firebase.database().ref("temperature_log/bedroom").orderByKey().limitToLast(1)
+	  var bedroom_ref = firebase.database().ref("devices/bedroom")
 	  // download the data into a local object
-	  $scope.bedroom = $firebaseArray(bedroom_ref);
+	  $scope.bedroom = $firebaseObject(bedroom_ref);
 
 	  var living_room_settings_ref = firebase.database().ref("settings/living_room")
 	  // download the data into a local object
@@ -45,8 +45,8 @@
 	  $scope.ago = 0
 
 	  $interval(function() {
-	  	   $scope.bedroom_ago = (new Date().getTime()-$scope.bedroom[0].timestamp);
-	  	   $scope.living_room_ago = (new Date().getTime()-$scope.living_room[0].timestamp);
+	  	   $scope.bedroom_ago = (new Date().getTime()-$scope.bedroom.timestamp);
+	  	   $scope.living_room_ago = (new Date().getTime()-$scope.living_room.timestamp);
 
 	    }, 1000 );
 
@@ -100,11 +100,11 @@
 
 	{{ago}}
 	<div moment-interval='2000'>
-		Living room: {{living_room[0].temperature }}C  {{bedroom_ago |elapsed }} ago
+		Living room: {{living_room.temperature }}C  {{living_room_ago |elapsed }} ago
 	</div>
 
 	<div moment-interval='1000'>
-		 Bedroom: {{bedroom[0].temperature }}C {{living_room_ago | elapsed }} ago
+		 Bedroom: {{bedroom.temperature }}C {{bedroom_ago | elapsed }} ago
 	</div>
 
 	<div>

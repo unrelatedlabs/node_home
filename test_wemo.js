@@ -1,6 +1,7 @@
 var Wemo = require('wemo-client');
 var wemo = new Wemo();
 
+function discover(){
 wemo.discover(function (err, deviceInfo) {
     var name = deviceInfo.friendlyName
 
@@ -22,6 +23,10 @@ wemo.discover(function (err, deviceInfo) {
     });
 
     // Turn the switch on
-    client.setBinaryState(1);
+//    client.setBinaryState(1);
 });
+}
+
+setInterval(discover,5000)
+
 

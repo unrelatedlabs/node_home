@@ -5,6 +5,10 @@ var clients = {}
 
 function discover(){
 wemo.discover(function (err, deviceInfo) {
+	if( err){
+		console.log("discover Error",err);
+		return;
+	}
     var name = deviceInfo.friendlyName
 
     console.log('Wemo Device Found: %s', name);
@@ -30,7 +34,7 @@ wemo.discover(function (err, deviceInfo) {
 });
 }
 
-setTimeout(discover,10*1000);
+setInterval(discover,10*1000);
 
 exports.init = function(name){
     console.log("Wemo heater", name)
