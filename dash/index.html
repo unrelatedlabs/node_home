@@ -114,9 +114,12 @@
 				<br/>
 				<button ng-click="updateTemperature(-1)">-</button>
 			</div>
-			<div>
+			<div class="col-xs-12">
 				<input type="range" min="5" max="23" ng-model="living_room_settings.temperature">
 			</div>
+			<div class="col-xs-12">
+				Updated {{living_room_ago |elapsed }} ago
+			<div>
 		</div></div>
 		
 		<div class="container-fluid"><div class="row">
@@ -145,14 +148,20 @@
 				<br/>
 				<button ng-click="updateTemperatureBedroom(-1)" ng-dblclick="updateTemperatureBedroom(-2)">-</button>
 			</div>
-			<div>
+			<div class="col-xs-12">
 				<input type="range" min="5" max="23" ng-model="bedroom_settings.temperature">
 			</div>
+			<div class="col-xs-12">
+				Updated {{bedroom_ago |elapsed }} ago
+			<div>
 		</div></div>
 		<div>
-			<h2>Schedule</h2>
+			<div class="col-xs-12">
+				<h2>Schedule</h2>
+			</div>
 			
-			<div class="schedule" ng-repeat="entry in schedule">
+			
+			<div class="schedule col-xs-12"  ng-repeat="entry in schedule">
 				<!-- <input type="time" min="0:00" max="23:59" ng-model="entry.time" ng-change="schedule.$save(entry)"> -->
 				<input type="range" step="{{60*5}}" min="0" max="{{24*60*60}}" ng-model="entry.time"  ng-change="schedule.$save(entry)">
 				{{entry.time | time_of_day}}
@@ -161,6 +170,7 @@
 				
 				<label>Living Room</label>
 				<input type="number" step="0.5" min="0" max="25" ng-model="entry.living_room" ng-change="schedule.$save(entry)">
+				<hr>
 			</div>
 			<buttom ng-click="add_schedule()">ADD</buttom>
 
