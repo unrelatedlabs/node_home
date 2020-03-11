@@ -7,13 +7,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,target-densitydpi=device-dpi, user-scalable=no"
 />
 
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
 
 	<!-- Firebase -->
-	<script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/3.6.6/firebase.js"></script>
 
 	<!-- AngularFire -->
-	<script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
+	<script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
 
 
 	<!-- Latest compiled and minified CSS -->
@@ -113,7 +113,10 @@
 				<button ng-click="updateTemperature(1)">+</button>
 				<br/>
 				<button ng-click="updateTemperature(-1)">-</button>
-        	</div>
+			</div>
+			<div>
+				<input type="range" min="5" max="23" ng-model="living_room_settings.temperature">
+			</div>
 		</div></div>
 		
 		<div class="container-fluid"><div class="row">
@@ -142,9 +145,32 @@
 				<br/>
 				<button ng-click="updateTemperatureBedroom(-1)" ng-dblclick="updateTemperatureBedroom(-2)">-</button>
 			</div>
+			<div>
+				<input type="range" min="5" max="23" ng-model="bedroom_settings.temperature">
+			</div>
 		</div></div>
-		
+		<div>
+			<h2>Schedule</h2>
+			
+			<div class="schedule" ng-repeat="entry in schedule">
+				<!-- <input type="time" min="0:00" max="23:59" ng-model="entry.time" ng-change="schedule.$save(entry)"> -->
+				<input type="range" step="{{60*5}}" min="0" max="{{24*60*60}}" ng-model="entry.time"  ng-change="schedule.$save(entry)">
+				{{entry.time | time_of_day}}
+				<label>Bedroom</label>
+				<input type="number" step="0.5" min="0" max="25" ng-model="entry.bedroom" ng-change="schedule.$save(entry)">
+				
+				<label>Living Room</label>
+				<input type="number" step="0.5" min="0" max="25" ng-model="entry.living_room" ng-change="schedule.$save(entry)">
+			</div>
+			<buttom ng-click="add_schedule()">ADD</buttom>
+
+			<pre>
+								{{schedule | json}}
+			</pre>
+
+		</div>
 	</div>
+	
  		
 <!-- <div>
 	Living room: <input type="number" ng-model="living_room_settings.temperature">

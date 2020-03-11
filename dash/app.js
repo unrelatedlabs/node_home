@@ -29,9 +29,19 @@ var config = {
 	  var bedroom_settings = $firebaseObject(bedroom_settings_ref);
 	  bedroom_settings.$bindTo($scope, "bedroom_settings");
 
+	  var schedule_settings_ref = firebase.database().ref().child("schedule")
+	  // download the data into a local object
+	  var schedule_settings = $firebaseArray(schedule_settings_ref);
+	  //schedule_settings.$bindTo($scope, "schedule");
+	  $scope.schedule = schedule_settings;
+
 
 	  // putting a console.log here won't work, see below
-	  $scope.ago = 0
+	  $scope.ago = 0;
+
+	  //schedule_settings.$add({"time":12}).then(()=>{console.log("done")});
+
+	 
 
 	  $interval(function() {
 	  	   $scope.bedroom_ago = (new Date().getTime()-$scope.bedroom.timestamp);
@@ -55,9 +65,13 @@ var config = {
 		  console.log("update", $scope.bedroom_settings.temperature, change)
 	  }
 
+	  $scope.add_schedule = ()=>{
+		  $scope.schedule.$add($scope.schedule[$scope.schedule.length-1]);
+	  }
+
    });
 
-   app.filter('elapsed', function($filter,$interval){
+app.filter('elapsed', function($filter,$interval){
    	 
     return function(difference){
 
@@ -80,6 +94,14 @@ var config = {
         // Date (e.g. Dec 2)
         return $filter('date')(time, 'MMM d');
     };
-    });
+});
+
+app.filter('time_of_day', function ($filter) {
+
+	return function (t) {
+		t = Math.floor(t/60);
+		return  Math.floor(t/60) +":"+ (Math.floor(t%60)).toString().padStart(2,"0");
+	};
+});
 
     

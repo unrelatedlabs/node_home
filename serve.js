@@ -84,8 +84,62 @@ function setupRoom(name,thermometer_id,heater_address){
 
 }
 
+var CronJob = require('cron').CronJob;
+
+
+function setupSchedule(){
+	var joblist = [];
+
+	function updateSchedule(schedule){
+		joblist.forEach(job => {
+			job.stop();
+		});
+
+		for (const key in schedule) {
+			try{
+				const entry = schedule[key];
+				var seconds = Math.floor(entry.time  % 60)
+				var minutes = Math.floor(entry.time/60%60)
+				var hours = Math.floor(entry.time / 60 / 60)
+
+				console.log( seconds,minutes,hours,entry);
+
+				var job = new CronJob(seconds + " "+ minutes + " " + hours+ " * * *", function () {
+					console.log('Time for',entry);
+					if( entry.bedroom ){
+						console.log('bedroom', entry.bedroom);
+						firebase.database().ref('settings/bedroom/temperature').set(entry.bedroom);
+					}
+					if (entry.living_room) {
+						console.log('living_room', entry.living_room);
+						firebase.database().ref('settings/living_room/temperature').set(entry.living_room);
+					}
+				}, null, true, 'America/Los_Angeles');
+				job.start();
+
+				joblist.push(job)
+			}catch(e){
+				console.log("setupSchedule error",e)
+			}
+		}
+	}
+
+	var schedule = firebase.database().ref('schedule');
+	schedule.on('value', function (snapshot) {
+		console.log("schedule " , snapshot.val());
+		updateSchedule(snapshot.val());
+	});
+
+	schedule.once('value', function (snapshot) {
+		console.log("schedule ", snapshot.val());
+		updateSchedule(snapshot.val());
+	});
+}
+
 setupRoom('living_room','57A7993C','lazybone://10.0.0.19')
 setupRoom('bedroom','2600032D',"wemo:heater")
+
+setupSchedule();
 
 var express = require('express')
 var app = express()
